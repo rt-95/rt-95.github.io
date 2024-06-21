@@ -1,0 +1,520 @@
+
+
+<!DOCTYPE html>
+<html lang="en" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Go 语言知识点笔记 - rt</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="1@ 正文前的 bb第二次面试周期终于结束了，经历了被...">
+  <meta name="author" content="rt">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/stun-logo.svg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/favicon-144x144.png">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="https://at.alicdn.com/t/font_1445822_p6ry5n7lrr.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/nord.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/nord.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      loading: {
+        gif: '/images/theme/loading.gif',
+        lottie: ''
+      },
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: {
+          gif: '/images/theme/loading.gif',
+          lottie: ''
+        }
+      },
+      donate: {
+        enable: false,
+        alipay: 'https://pic.izhaoo.com/alipay.jpg',
+        wechat: 'https://pic.izhaoo.com/wechat.jpg'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: false
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: false
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '',
+          typing: true,
+          api: '',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://i.328888.xyz/2023/04/13/igT1lV.jpeg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body class="lock-screen">
+  <div class="loading" id="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">Go 语言知识点笔记</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li><li class="menu-item">
+        <a href="/articles/ " class="underline "> 文章</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">rt</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/theme/post-image.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">Go 语言知识点笔记</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>December 10, 2020</span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>7794</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        
+        <h2 id="1-正文前的-bb"><a href="#1-正文前的-bb" class="headerlink" title="1@ 正文前的 bb"></a>1@ 正文前的 bb</h2><p>第二次面试周期终于结束了，经历了被某公司放鸽子的社会毒打后，第二波投递广撒网，终于顺利结束了秋招。</p>
+<p>有了工作就有了新的学习目标。准备接下来这段时间补充一下 go 语言的基础，买了一本被誉为 <code>Go 语言圣经</code> 的 《Go 程序设计语言》，结合现网上存在的一些优秀开源文章，在此记录下学习笔记 (这里自己只记了一些 Go 比较特殊的点或者比较难懂的点)，供自己和有需要的同学参考。</p>
+<h2 id="2-1-5-章-语言基础"><a href="#2-1-5-章-语言基础" class="headerlink" title="2@ 1 ~ 5 章 语言基础"></a>2@ 1 ~ 5 章 语言基础</h2><p>1、Go 原生的支持 Unicode，所以理论上它可以处理任何国家的语言。</p>
+<p>2、<code>go run [源文件]</code> 指令是将某个 go 文件编译、链接、然后运行生成可执行文件。</p>
+<p><code>go build [源文件]</code> 构建出一个可执行的二进制文件。</p>
+<p>3、Go 不需要在语句或者声明后面使用分号结尾【跟在特定符号后面的换行符被转换为分号】，除非有多个语句或声明出现在同一行。</p>
+<p>4、<code>&#123;</code> 符必须和 <code>func</code> 关键字放在同一行。</p>
+<p>5、<code>gofmt</code> 是一个将代码以标准格式重写的命令行工具(Go 自带)，默认重写当前目录所有文件。</p>
+<p>6、<code>++i</code> 或者 <code>--i</code> 在 Go 里面是不合法的，其只支持后缀。</p>
+<p>7、<code>for</code> 循环是 Go 语言唯一的循环语句。</p>
+<p>8、Go 不允许存在无用的临时变量，一般使用空标识符 <code>_</code> 来处理需要丢弃的临时变量，如下面的 for range 循环：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;os&quot;</span><br>)<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	s, sep := <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-comment">// range 产生一对值：索引和这个索引处元素的值</span><br>	<span class="hljs-keyword">for</span> _, arg := <span class="hljs-keyword">range</span> os.Args[<span class="hljs-number">1</span>:] &#123;<br>		s += sep + arg<br>		sep = <span class="hljs-string">&quot; &quot;</span><br>	&#125;<br>	fmt.Println(s)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>9、<code>:=</code> 这种短变量声明通常只在函数内使用，不适合当做全局变量等包级别的变量声明</p>
+<p>10、<code>map</code> 里的键的迭代顺序不是固定的，通常是随机的，每次运行都不一致。这是有意设计的，以防止程序依赖某种特定的序列。[具有一定的随机安全性]</p>
+<p>11、函数和其他包级别的实体可以以任意次序声明。</p>
+<p>12、常用的 http 请求代码：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs stylus">package <span class="hljs-selector-tag">main</span><br><br><span class="hljs-built_in">import</span>(<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;io/ioutil&quot;</span><br>	<span class="hljs-string">&quot;net/http&quot;</span><br>	<span class="hljs-string">&quot;os&quot;</span><br>)<br>func <span class="hljs-selector-tag">main</span>() &#123;<br>	<span class="hljs-keyword">for</span> _, url := range os<span class="hljs-selector-class">.Args</span><span class="hljs-selector-attr">[1:]</span> &#123;<br>		resp, err := http<span class="hljs-selector-class">.Get</span>(url)<br>		<span class="hljs-keyword">if</span> err != nil &#123;<br>			fmt<span class="hljs-selector-class">.Fprintf</span>(os<span class="hljs-selector-class">.Stderr</span>, <span class="hljs-string">&quot;fetch: %v\n&quot;</span>, err)<br>			os<span class="hljs-selector-class">.Exit</span>(<span class="hljs-number">1</span>)<br>		&#125;<br>		<span class="hljs-selector-tag">b</span>, err := ioutil<span class="hljs-selector-class">.ReadAll</span>(resp.Body)<br>		resp<span class="hljs-selector-class">.Body</span><span class="hljs-selector-class">.Close</span>()<br>		<span class="hljs-keyword">if</span> err != nil &#123;<br>			fmt<span class="hljs-selector-class">.Fprintf</span>(os<span class="hljs-selector-class">.Stderr</span>, <span class="hljs-string">&quot;reading %s: %v\n&quot;</span>, url, err)<br>			os<span class="hljs-selector-class">.Exit</span>(<span class="hljs-number">1</span>)<br>		&#125;<br>		fmt<span class="hljs-selector-class">.Printf</span>(<span class="hljs-string">&quot;%s&quot;</span>, b)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>13、包名本身总是以小写字母组成。实体的第一个字母的大小写决定其可见性是否跨包（首字母大写大写跨包可见，类比 Public 属性）。</p>
+<p>14、命名习惯用驼峰(大小都可)，特殊单词保持大小写同步，譬如 <code>HTML</code>, <code>ASCII</code> 等。</p>
+<p>15、包级别的实体名字对同一个包里的所有源文件都可见。</p>
+<p>16、数组和结构体这种复合变量的默认成员初始值都是 0。</p>
+<p>17、包级别的初始化在 main 函数开始之前进行。</p>
+<p>18、短变量声明最少声明一个新变量，否则编译无法通过。</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stata">f, <span class="hljs-keyword">err</span> := os.<span class="hljs-keyword">Open</span>(<span class="hljs-keyword">file</span>)<br><br>f, <span class="hljs-keyword">err</span> := os.Create(<span class="hljs-keyword">file</span>) <span class="hljs-comment">// 编译错误：没有新的变量</span><br></code></pre></td></tr></table></figure>
+
+<p>19、不是所有值都有地址，但是所有变量都有。</p>
+<p>20、<code>new</code> 函数是内置的创建变量的函数，例子如下：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">p</span> := <span class="hljs-built_in">new</span>(int) <span class="hljs-comment">// *int 类型的 p，指向未命名的 int 变量</span><br>fmt<span class="hljs-selector-class">.Println</span>(*p) <span class="hljs-comment">// 输出 0</span><br>*<span class="hljs-selector-tag">p</span> = <span class="hljs-number">2</span><br>fmt<span class="hljs-selector-class">.Println</span>(*p) <span class="hljs-comment">// 输出 2</span><br></code></pre></td></tr></table></figure>
+
+<p>但其是一个预定义函数，不是关键字，可以在代码 的其他地方重新定义并利用。</p>
+<p>21、<code>nil</code> 可以赋值给任何接口变量或者引用类型。</p>
+<p>22、如果两个类型<strong>具有相同的底层类型</strong>或者<strong>二者都是指向相同底层类型变量的未命名指针类型</strong>，则二者是可以相互转换的。</p>
+<p>23、包级别声明可以被同一个包的任何文件引用。导入的包是文件级别的，只能在被导入的文件内才能使用。</p>
+<p>24、 Go 的数据类型分为四大类：基础类型，聚合类型【数组，结构体】，引用类型【指针，slice，map，函数，通道】，接口类型。</p>
+<p>25、<code>rune</code> 类型是 int32 类型的同义词，常常用于指明一个值是 Unicode 码点。同样，<code>byte</code> 类型和 uint8 类型是同义词，强调一个值是原始数据，而非量值。</p>
+<p>26、Go 中浮点型数字转换为整型数字会舍弃小数部分。</p>
+<p>27、float32 能精确表示的正整数范围有限。</p>
+<p>28、内置的 <code>complex</code> 函数根据给定的实部和虚部创建复数，而内置的 <code>real</code> 函数提取复数的实部，函数 <code>imag</code> 提取复数的虚部。</p>
+<p>29、布尔值无法隐式地转换为数值。</p>
+<p>30、内置的 <code>len</code> 函数返回字符串的字节数，并非文本数。譬如 <code>中国</code> 这个字符串的函数返回结果是 6。</p>
+<p>31、Go 中字符串下标访问 <code>a[0]</code> 返回的是对应索引的 <code>unicode</code> 编码。</p>
+<p>32、字符串不可变，所以字符串内部的值不能修改：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">s</span>[<span class="hljs-number">0</span>] = <span class="hljs-string">&quot;L&quot;</span> // 编译错误：s[<span class="hljs-number">0</span>] 无法赋值<br></code></pre></td></tr></table></figure>
+
+<p>33、字符串不可变意味着两个字符串能安全地共用同一段底层内存。类似，字符串及其子串可以安全地共享数据，这两种情况都没有分配新内存，开销低廉。</p>
+<p>34、Go 中的原生字符串使用反引号包围。</p>
+<p>35、<code>bytes.Buffer</code> 是高效处理字节 slice 的类型。</p>
+<p>36、<code>strconv，Itoa</code> 可以将整数转换为字符串，或者使用 <code>fmt.Sprintf()</code> 函数。</p>
+<p>37、Go 语言中，只有大小不明确的 int 类型，却不存在大小不确定的 float 类型和 complex 类型，原因是，如果浮点型数据的大小不明，就很难写出正确的数值算法。</p>
+<p>38、若字符串包含一个字节数组，创建后它就无法改变。相反，字节 slice 的元素允许随意修改。</p>
+<p>39、常见不易记住的 <code>Printf</code> 的转义值：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs abnf">%t	<span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; 布尔型<br>%q	<span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; 带引号的字符串<br>%v	<span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; 内置格式的任何值<br>%T	<span class="hljs-operator">=</span><span class="hljs-operator">=</span>&gt; 任何值的类型<br></code></pre></td></tr></table></figure>
+
+<p>40、由于数组长度固定，所以在 Go 里很少直接使用数组。</p>
+<p>41、数组长度中出现省略号，此时数组长度由初始化数组的元素个数决定。</p>
+<p>42、数组的长度也是数组类型的一部分，所以 <code>[3]int</code> 和 <code>[4]int</code> 是两种不同的数组类型，也不能拿来比较了。</p>
+<p>43、slice 表示一个拥有相同类型元素的可变长度的序列。通常写为 []T。Go 内置函数 <code>len()</code>, <code>cap</code> 用来返回 slice 的长度和容量。</p>
+<p>44、和数组不同的是，slice 无法比较。标准库里面提供了针对字节 slice 的比较 <code>bytes.Equal</code>,但是对于其他类型的 slice，我们需要自己设计方法进行比较。</p>
+<p>45、slice 类型的 0 值是 <code>nil</code>，是 slice 唯一允许比较的对象。</p>
+<p>46、由于无法保证 <code>append()</code> 操作后 slice 对应的底层数组是否改变，我们一般在 <code>append()</code> 操作后显示的再次赋给被操作的 slice。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">runes</span> = append(runes, r)<br></code></pre></td></tr></table></figure>
+
+<p>47、<code>map</code> 元素不是一个变量，不能获取它的地址。其中一个原因就是 <code>map</code> 的动态增长可能会使原有元素的地址改变。</p>
+<p>48、向零值 <code>map</code> 设置值会导致错误。</p>
+<p>49、如果 <code>map</code> 中的键不存在，会返回 <code>map</code> 值类型的零值。一般用两个值来接收 <code>map</code> 的元素访问：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">age, ok := ages[<span class="hljs-string">&quot;bob&quot;</span>] <span class="hljs-regexp">//</span> 第二个值返回的是布尔值，用来报告该元素是否存在<br></code></pre></td></tr></table></figure>
+
+<p>50、访问成员变量时，点号同样可以用在结构体指针上。</p>
+<p>51、一个结构体可以同时包含可导出和不可导出的成员变量。</p>
+<p>52、聚合类型不能包含自己，可以包含自己的类型指针。</p>
+<p>53、不可以在一个结构体里面定义两个相同类型的匿名成员。</p>
+<p>54、为了避免 <code>html/template</code> 对常见特殊字符的转义，可以使用 <code>template.HTML</code> 类型的字符串避免模板的自动转义。</p>
+<p>55、函数多个形参的类型如果一致的话，那么函数声明的时候只需要写一次即可。</p>
+<p>56、在 Go 语言中，如果函数声明没有函数体，说明这个函数使用除了 Go 以外的语言实现。</p>
+<p>57、Go 语言实现了可变长度的栈，栈的大小会随着使用而增长，可达到 1GB 左右的上下。所以 Go 可以放心安全的使用深度递归不用担心一般的栈溢出问题。</p>
+<p>58、函数如果有命名的返回值，可以使用 <code>裸返回</code>(即只需要 return 关键字即可，返回参数顺序与函数声明的返回值序列一致)。</p>
+<p>59、Go 程序使用通常的控制流机制（if 和 return 语句）应对错误。</p>
+<p>60、函数参数为 <code>interface&#123;&#125;</code> 类型时意味着该函数此处参数可以接受任何值。</p>
+<p>61、<code>defer</code> 关键字用来处理一些必须出现的成对操作，譬如关闭网络资源，关闭文件资源等。不论是正常情况的 <code>return</code>, 函数执行完毕，或者是不正常的宕机，它们的操作都必须推迟到包含 <code>defer</code> 语句的函数之后才能正常进行。</p>
+<p>62、延迟执行的匿名函数可以观察到函数的返回结果（使用 <code>defer</code> 关键字）。</p>
+<p>63、许多文件系统中，尤其是 <code>NFS</code> 系统，写错误往往推迟到文件关闭阶段。</p>
+<h2 id="3-第-6-章-方法"><a href="#3-第-6-章-方法" class="headerlink" title="3@ 第 6 章 方法"></a>3@ 第 6 章 方法</h2><p>1、Go 中类型的方法不是通过 <code>this</code> 或者 <code>self</code> 实现，而是直接选择接收者<strong>实例</strong>的名字。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> Point <span class="hljs-keyword">struct</span> &#123;X, Y, <span class="hljs-type">float64</span>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(p Point)</span></span> Distance(q Point) <span class="hljs-type">float64</span> &#123; ... <span class="hljs-comment">// 函数逻辑&#125;</span><br>                                          <br><span class="hljs-comment">// 可以使用 p.Distance 来调用方法了</span><br></code></pre></td></tr></table></figure>
+
+<p>2、<code>p.Distance</code> 叫选择子（selector）。</p>
+<p>3、在类型中不能声明相同的成员变量和成员方法名。</p>
+<p>4、除了指针类型和接口类型，其他任何简单类型我们都可以方便的绑定方法到对应的类型上。</p>
+<p>5、接收者声明出智能放类似 <code>Point</code> 或者 <code>*Point</code> 的类型名。为了防止混淆，不允许本身是指针的类型进行方法声明。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> P *<span class="hljs-type">int</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(P)</span></span> f()&#123;&#125;	<span class="hljs-comment">// 编译错误，非法接收者</span><br></code></pre></td></tr></table></figure>
+
+<p>6、如果方法要求是指针接收者，我们可以简写:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">p</span><span class="hljs-selector-class">.fuc</span>() // <span class="hljs-selector-tag">p</span> 是某类型变量，之所以可以这么简写，是因为编译器对变量进行了隐式转换 &amp;<span class="hljs-selector-tag">p</span><br></code></pre></td></tr></table></figure>
+
+<p>7、和普通函数一样，方法在引用本身做的任何改变，都不会在调用者身上产生作用。</p>
+<p>8、类型和类型的方法声明需在同一个作用域下（全局），才能形成绑定关系。</p>
+<h2 id="4-第7章-接口"><a href="#4-第7章-接口" class="headerlink" title="4@ 第7章 接口"></a>4@ 第7章 接口</h2><p>1、Go 语言的接口独特之处在于其<strong>隐式实现</strong>。对于一个具体的类型无须声明它实现了哪些接口，只要提供接口所必须的方法即可。</p>
+<p>2、一个接口值包括两个部分: 一个具体类型和该类型的一个值。</p>
+<p>3、接口的零值就是把它的动态类型和值都设置为 <code>nil</code>。</p>
+<p>4、接口值是可以比较的。当接口值都为 <code>nil</code> 或者动态类型和动态值完全一致的时候，两个接口相等。</p>
+<p>5、一般使用 <code>fmt</code> 包中的 <code>%T</code> 格式化参数来实现对接口动态类型的获取。（内部使用反射实现）。</p>
+<h2 id="5-第-10-章-包和-go-工具"><a href="#5-第-10-章-包和-go-工具" class="headerlink" title="5@ 第 10 章 包和 go 工具"></a>5@ 第 10 章 包和 go 工具</h2><blockquote>
+<p>Go 的包管理一直是大众诟病的一点，随着 Go 版本的迭代，出现了不同的包管理模式。这本书上只是简单的讲了原始 GOPATH 的包管理模式，剩余拓展内容见引用链接。</p>
+</blockquote>
+<p>1、在 <code>http://godoc.org</code> 中可以找到已经公开的包搜索的索引。</p>
+<p>2、Go 语言中包的依赖性形成有向无环图，因为没有环，所以包可以独立甚至并行编译（也是 Go 编译速度快的一个原因）。</p>
+<p>3、重命名导入：为了避免两个包名相同:</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs aspectj"><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;crypto/rand&quot;</span><br>    mrand <span class="hljs-string">&quot;math/rand&quot;</span>  <span class="hljs-comment">// 将此包重命名</span><br>)<br></code></pre></td></tr></table></figure>
+
+<p>4、导入包未使用会在编译阶段报错，为了避免这一点，我们使用空白标识符来重命名包：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">import</span> _ “image/png”<br></code></pre></td></tr></table></figure>
+
+<p>5、当把一个 go 文件的包名声明为 <code>main</code> 的时候，就等于告诉 go 编译程序，这是一个可执行程序，编译器就会尝试编译它为一个可执行文件。<code>main</code> 包里面必须有 <code>main()</code> 函数。</p>
+<p>6、对于包的查找1，是有优先级的，编译器会现在 <code>GOROOT</code> 里搜索，其次是 <code>GOPATH</code>，一旦找到，会立马停止搜索。若最终未找到，就报编译异常了。</p>
+<p>7、远程包导入首先会在 <code>GOPATH</code> 下寻找，如果没找到，会使用 <code>go-get</code> 远程获取，将其存储在 <code>GOPATH</code> 对应目录下。</p>
+<p>8、使用 <code>go mod</code> 类型的包管理时，需要先初始化 <code>go modules</code>，在项目根目录执行命令 <code>go mod init [module name]</code>，生成 <code>go.mod</code> 文件。需要注意的是，执行 <code>init</code> 暂时还不会将需要的依赖包进行管理，<code>go,mod</code> 文件只会生成 <code>module 名</code> 和 <code>go version</code> （此时这个 <code>go.mod</code> 甚至是隐藏的，存在于内存中？）, 只有真正执行 <code>run</code> 或者 <code>build</code> 的命令时才会真正触发依赖的解析和下载。</p>
+<p>9、<code>go mod</code> 这种包管理模式在 1.13 的版本以后默认开启。</p>
+<h2 id="6-其他-Go-语言特性"><a href="#6-其他-Go-语言特性" class="headerlink" title="6@ 其他 Go 语言特性"></a>6@ 其他 Go 语言特性</h2><p>1、<code>flag</code> 是 Go 标准库提供的包，用于方便的进行命令行解析。</p>
+<p>2、绑定 <code>flag</code> 有两种方法:</p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sqf"><span class="hljs-number">1</span>、<span class="hljs-built_in">flag</span>.Xxx,其中 Xxx 可以是 Int， String 等，返回一个相应类型的指针。<br><br>var ip = <span class="hljs-built_in">flag</span>.Int(<span class="hljs-string">&quot;flagname&quot;</span>, <span class="hljs-number">1234</span>. <span class="hljs-string">&quot;help message for flagname&quot;</span>)<br><br><span class="hljs-number">2</span>、<span class="hljs-built_in">flag</span>.XxxVar,将 <span class="hljs-built_in">flag</span> 绑定到一个变量上面。<br><br><span class="hljs-built_in">flag</span>.IntVar(&amp;flagvar, <span class="hljs-string">&quot;flagname&quot;</span>, <span class="hljs-number">1234</span>. <span class="hljs-string">&quot;help message for flagname&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>3、常见的 flag 类型:</p>
+<blockquote>
+<p>1、ErrorHandling，定义了参数出错时的处理方式:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">type</span> ErrorHandling <span class="hljs-type">int</span><br><span class="hljs-keyword">const</span> (<br>    ContinueOnError ErrorHandling = <span class="hljs-literal">iota</span><br>    ExitOnError<br>    PanicOnError<br>)<br></code></pre></td></tr></table></figure>
+
+<p>2、FlagSet</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// A FlagSet represents a set of defined flags.</span><br><span class="hljs-keyword">type</span> FlagSet <span class="hljs-keyword">struct</span> &#123;<br>    <span class="hljs-comment">// Usage is the function called when an error occurs while parsing flags.</span><br>    <span class="hljs-comment">// The field is a function (not a method) that may be changed to point to</span><br>    <span class="hljs-comment">// a custom error handler.</span><br>    Usage <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span><br><br>    name <span class="hljs-type">string</span> <span class="hljs-comment">// FlagSet 的名字。CommandLine 给的是 os.Args[0]</span><br>    parsed <span class="hljs-type">bool</span> <span class="hljs-comment">// 是否执行过 Parse()</span><br>    actual <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]*Flag <span class="hljs-comment">// 存放实际传递了的参数（即命令行参数）</span><br>    formal <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]*Flag <span class="hljs-comment">// 存放所有已定义命令行参数</span><br>    args []<span class="hljs-type">string</span> <span class="hljs-comment">// arguments after flags // 开始存放所有参数，最后保留 非 flag（non-flag）参数</span><br>    exitOnError <span class="hljs-type">bool</span> <span class="hljs-comment">// does the program exit if there&#x27;s an error?</span><br>    errorHandling ErrorHandling <span class="hljs-comment">// 当解析出错时，处理错误的方式</span><br>    output io.Writer <span class="hljs-comment">// nil means stderr; use out() accessor</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>3、Value 接口</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// Value is the interface to the dynamic value stored in a flag.</span><br><span class="hljs-comment">// (The default value is represented as a string.)</span><br><span class="hljs-keyword">type</span> <span class="hljs-title class_">Value</span> <span class="hljs-keyword">interface</span> &#123;<br>    <span class="hljs-title class_">String</span>() <span class="hljs-built_in">string</span><br>    <span class="hljs-title class_">Set</span>(<span class="hljs-built_in">string</span>) error<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>所有参数类型都需要实现 Value 接口才能正常解析，内置 flag 包为 int，float，bool 等类型实现了该接口。利用该接口，我们可以自定义 flag。</p>
+</blockquote>
+<p>Reference:</p>
+<p>《Go 程序语言设计》</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>www.flysnow.org<span class="hljs-regexp">/2017/</span><span class="hljs-number">03</span><span class="hljs-regexp">/04/g</span>o-<span class="hljs-keyword">in</span>-action-go-package.html<br>https:<span class="hljs-regexp">//</span>zhuanlan.zhihu.com<span class="hljs-regexp">/p/</span><span class="hljs-number">92992277</span>?utm_source=wechat_session<br></code></pre></td></tr></table></figure>
+
+<p><code>http://books.studygolang.com/The-Golang-Standard-Library-by-Example/</code> 通过例子学 Go 标准库</p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>rt</li>
+    <li><strong>本文链接：</strong><a href="https://rt-95.github.io/2020/12/10/Go%20%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86%E7%82%B9%E7%AC%94%E8%AE%B0/index.html" title="https:&#x2F;&#x2F;rt-95.github.io&#x2F;2020&#x2F;12&#x2F;10&#x2F;Go%20%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86%E7%82%B9%E7%AC%94%E8%AE%B0&#x2F;index.html">https:&#x2F;&#x2F;rt-95.github.io&#x2F;2020&#x2F;12&#x2F;10&#x2F;Go%20%E8%AF%AD%E8%A8%80%E7%9F%A5%E8%AF%86%E7%82%B9%E7%AC%94%E8%AE%B0&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+        
+        
+  <nav class="nav">
+    <a href="/2020/12/11/Gogs%20%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/"><i class="iconfont iconleft"></i>Gogs 远程命令执行漏洞</a>
+    <a href="/2019/10/06/%E6%9F%90%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%AE%A1%E8%AE%A1%E5%B0%8F%E7%BB%93/">某企业管理系统审计小结<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+        <section class="comments">
+  
+    <div class="btn" id="comments-btn">查看评论</div>
+  
+  
+<div id="valine"></div>
+<script defer src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+  window.onload = function () {
+    var loadValine = function () {
+      new Valine({
+        el: '#valine',
+        app_id: "2p9C8apOcLBToxgiqqnJtF5v-gzGzoHsz",
+        app_key: "r9A7GDDCd5SSLNdlcwqxdjvR",
+        placeholder: "说点什么吧",
+        avatar: "mp",
+        pageSize: "10",
+        lang: "zh-CN",
+      });
+    }
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        loadValine();
+      });
+    } else {
+      loadValine();
+    }
+  };
+</script>
+
+</section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%AD%A3%E6%96%87%E5%89%8D%E7%9A%84-bb"><span class="toc-text">1@ 正文前的 bb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-5-%E7%AB%A0-%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80"><span class="toc-text">2@ 1 ~ 5 章 语言基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%AC%AC-6-%E7%AB%A0-%E6%96%B9%E6%B3%95"><span class="toc-text">3@ 第 6 章 方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%AC%AC7%E7%AB%A0-%E6%8E%A5%E5%8F%A3"><span class="toc-text">4@ 第7章 接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%AC%AC-10-%E7%AB%A0-%E5%8C%85%E5%92%8C-go-%E5%B7%A5%E5%85%B7"><span class="toc-text">5@ 第 10 章 包和 go 工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%85%B6%E4%BB%96-Go-%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7"><span class="toc-text">6@ 其他 Go 语言特性</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="https://github.com/59lx "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="https://weibo.com/u/6479214985 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#00cc99" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconweibo"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">rt</a>  |  Theme - <a target="_blank" href="https://github.com/izhaoo/hexo-theme-zhaoo">zhaoo</a></p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+  
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
