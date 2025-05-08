@@ -7,9 +7,9 @@
     return response.json();
   })
   .then(data => {
-    console.log('received data:', data.status);
+    document.write('received data:', data.status);
   })
   .catch(error => {
-    console.error('fetch_error', error);
+    document.write('fetch_error', error);
   });
 </script>
