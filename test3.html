@@ -4,10 +4,10 @@
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    return response.json();
+    return response.text();
   })
   .then(data => {
-    document.write('received data:', data.status);
+    document.write('received data:', data);
   })
   .catch(error => {
     document.write('fetch_error', error);
