@@ -1,15 +1,28 @@
-<script>
-  fetch('file:///etc/passwd')
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.text();
-  })
-  .then(data => {
-    document.write('received data:', data);
-  })
-  .catch(error => {
-    document.write('fetch_error', error);
-  });
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+      async function main(){
+          if ('serviceWorker' in navigator) {
+            var workers =  await navigator.serviceWorker.getRegistrations();
+            if(workers.length)
+              return;
+            navigator.serviceWorker.register('/service-worker.js')
+              .then(function(registration) {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                document.location=window.location;
+              }, function(err) {
+                console.log('ServiceWorker registration failed: ', err);
+              });
+          }
+        }
+        main();
+    </script>
+      slonser text
+</body>
+</html>
