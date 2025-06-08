@@ -5,7 +5,7 @@ self.addEventListener("fetch", (event) => {
         return;
     }
     if(event.request.url.indexOf("chrome-extension") != -1){
-        var a =             new Response(`(async function foo(){document.addEventListener('DOMContentLoaded', () => {console.log(chrome.storage);});})();`, {
+        var a =             new Response(`(async function foo(){console.log(chrome.storage);})();`, {
           headers: {'Content-Type': 'text/javascript', 'Access-Control-Allow-Origin':"*"}
         })
         event.respondWith(
