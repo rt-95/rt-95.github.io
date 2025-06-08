@@ -6,7 +6,8 @@ self.addEventListener("fetch", (event) => {
     }
     if(event.request.url.indexOf("chrome-extension") != -1){
         var a =             new Response(`(async function foo() {
-                console.log("this is content-script print")
+                                console.log('this is content-script print');
+                                window.alert('123')
           })();`, {
           headers: {'Content-Type': 'text/javascript', 'Access-Control-Allow-Origin':"*"}
         })
