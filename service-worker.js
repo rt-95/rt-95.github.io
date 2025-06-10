@@ -1,4 +1,5 @@
 self.addEventListener("fetch", (event) => {
+    console.log('拦截到请求:', event.request.url);
     console.log(`Handling fetch event for ${event.request.url}!`);
     if(event.request.url.indexOf("chrome-extension") === -1){
         event.respondWith(fetch(event.request.url));
