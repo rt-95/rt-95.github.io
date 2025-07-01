@@ -1,0 +1,17 @@
+<script>
+fetch('https://f-charge-fee.snssdk.com/api/traderecord/list', {
+    method: 'POST',
+    credentials: 'include', // 携带跨域 cookie
+    headers: {
+        'Host': 'f-charge-fee.snssdk.com',
+        'Content-Type': 'application/json',
+        'User-Agent': 'PostmanRuntime/7.26.8',
+    },
+    body: JSON.stringify({
+        "page": "1"
+    })
+})
+.then(response => response.text()) // 返回原始响应内容（对应 curl 的 -i 参数）
+.then(data => document.write(data))
+.catch(error => console.error('Error:', error));
+</script>
